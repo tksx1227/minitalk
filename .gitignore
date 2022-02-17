@@ -54,3 +54,6 @@ dkms.conf
 # Target binary file
 bin/server
 bin/client
+
+# ft_printf
+ft_printf/
