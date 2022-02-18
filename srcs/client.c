@@ -59,24 +59,24 @@ void	ft_send_msg(pid_t pid, char *msg)
 		ft_printf("Failed to send message.\n");
 }
 
+void	sig_handler(int signum)
+{
+	if (signum == SIGUSR1)
+		g_sigflg = 1;
+}
+
 int	main(int ac, char **av)
 {
-	size_t	i;
 	pid_t	pid;
 
 	if (ac != 3)
 	{
 		ft_printf("Input Error!!\n");
-		ft_printf("Usage: ./client <PROCESS_ID> <MESSAGES>\n");
+		ft_printf("Usage: client <PROCESS_ID> <MESSAGES>\n");
 		return (1);
 	}
-	i = 0;
-	pid = 0;
-	while (ft_isdigit(av[1][i]))
-	{
-		pid = 10 * pid + (av[1][i] - '0');
-		i++;
-	}
+	signal(SIGUSR1, sig_handler);
+	pid = (pid_t)ft_atoi(av[1]);
 	ft_send_msg(pid, av[2]);
 	return (0);
 }
