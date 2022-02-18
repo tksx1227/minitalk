@@ -63,5 +63,12 @@ void	setup_sigaction(void)
 
 int	main(void)
 {
+	pid_t	pid;
+
+	pid = getpid();
+	ft_printf("PID: %d\n", pid);
+	setup_sigaction();
+	while (1)
+		;
 	return (0);
 }
