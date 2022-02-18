@@ -45,6 +45,22 @@ void	sig_handler(int signum, siginfo_t *info, void *context)
 		store_bits(0x01, info->si_pid);
 }
 
+void	setup_sigaction(void)
+{
+	struct sigaction	sa;
+
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_flags = 0;
+	sa.sa_sigaction = sig_handler;
+	if (sigemptyset(&sa.sa_mask) != 0 \
+			|| sigaction(SIGUSR1, &sa, NULL) != 0 \
+			|| sigaction(SIGUSR2, &sa, NULL) != 0)
+	{
+		ft_printf("ERROR: Setup sigaction is failed.");
+		exit(1);
+	}
+}
+
 int	main(void)
 {
 	return (0);
