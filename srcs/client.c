@@ -6,11 +6,13 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:04 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/18 01:35:54 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/18 17:53:24 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+
+volatile sig_atomic_t	g_sigflg;
 
 void	ft_send_char(pid_t pid, char c)
 {
@@ -19,22 +21,22 @@ void	ft_send_char(pid_t pid, char c)
 	int				offset;
 	unsigned char	uc;
 
-	offset = 7;
+	offset = 0;
 	uc = (unsigned char)c;
-	while (0 <= offset)
+	while (offset < 8)
 	{
-		usleep(50);
-		bit = uc & (0x01 << offset);
+		usleep(500);
+		bit = uc & (0x01 << (7 - offset));
 		if (bit == 0x00)
 			res = kill(pid, SIGUSR1);
 		else
 			res = kill(pid, SIGUSR2);
 		if (res == -1)
 		{
-			ft_printf("kill %d failed: no such process.\n", pid);
+			ft_printf("Failed to send signal to process %d.\n", pid);
 			exit(1);
 		}
-		offset--;
+		offset++;
 	}
 }
 
