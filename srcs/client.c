@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:04 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/18 17:53:24 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/18 17:57:45 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,18 @@ void	ft_send_msg(pid_t pid, char *msg)
 	size_t	i;
 
 	i = 0;
+	g_sigflg = 0;
 	while (msg[i] != '\0')
 	{
 		ft_send_char(pid, msg[i]);
 		i++;
 	}
+	ft_send_char(pid, '\0');
+	usleep(500);
+	if (g_sigflg)
+		ft_printf("Successed to send message.\n");
+	else
+		ft_printf("Failed to send message.\n");
 }
 
 int	main(int ac, char **av)
