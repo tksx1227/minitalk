@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:04 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/19 12:22:59 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/19 20:09:33 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ static void	ft_send_char(pid_t pid, char c)
 	char	bit;
 
 	offset = 0;
-	while (offset < 8)
+	while (offset < CHAR_BIT)
 	{
-		bit = c & (0x01 << (7 - offset));
+		bit = c & (1 << (CHAR_BIT - offset));
 		offset++;
-		if (bit == 0x00)
+		if (bit == 0)
 			res = kill(pid, SIGUSR1);
 		else
 			res = kill(pid, SIGUSR2);
