@@ -6,15 +6,41 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:04 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/19 12:19:05 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/19 12:22:59 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
+static void	sig_handler(int signum);
+static void	ft_send_char(pid_t pid, char c);
+static void	ft_send_msg(pid_t pid, char *msg);
+
 volatile sig_atomic_t	g_sigflg;
 
-void	ft_send_char(pid_t pid, char c)
+int	main(int ac, char **av)
+{
+	pid_t	pid;
+
+	if (ac != 3)
+	{
+		ft_printf("Input Error!!\n");
+		ft_printf("Usage: client <PROCESS_ID> <MESSAGES>\n");
+		return (1);
+	}
+	signal(SIGUSR1, sig_handler);
+	pid = (pid_t)ft_atoi(av[1]);
+	ft_send_msg(pid, av[2]);
+	return (0);
+}
+
+static void	sig_handler(int signum)
+{
+	if (signum == SIGUSR1)
+		g_sigflg = 1;
+}
+
+static void	ft_send_char(pid_t pid, char c)
 {
 	int		res;
 	int		offset;
@@ -38,7 +64,7 @@ void	ft_send_char(pid_t pid, char c)
 	}
 }
 
-void	ft_send_msg(pid_t pid, char *msg)
+static void	ft_send_msg(pid_t pid, char *msg)
 {
 	size_t	i;
 
@@ -55,26 +81,4 @@ void	ft_send_msg(pid_t pid, char *msg)
 		ft_printf("[ Successed to send message. ]\n");
 	else
 		ft_printf("[ Failed to send message. ]\n");
-}
-
-void	sig_handler(int signum)
-{
-	if (signum == SIGUSR1)
-		g_sigflg = 1;
-}
-
-int	main(int ac, char **av)
-{
-	pid_t	pid;
-
-	if (ac != 3)
-	{
-		ft_printf("Input Error!!\n");
-		ft_printf("Usage: client <PROCESS_ID> <MESSAGES>\n");
-		return (1);
-	}
-	signal(SIGUSR1, sig_handler);
-	pid = (pid_t)ft_atoi(av[1]);
-	ft_send_msg(pid, av[2]);
-	return (0);
 }
