@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:04 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/18 17:57:45 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/19 12:19:05 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,15 @@ volatile sig_atomic_t	g_sigflg;
 
 void	ft_send_char(pid_t pid, char c)
 {
-	int				bit;
-	int				res;
-	int				offset;
-	unsigned char	uc;
+	int		res;
+	int		offset;
+	char	bit;
 
 	offset = 0;
-	uc = (unsigned char)c;
 	while (offset < 8)
 	{
-		usleep(500);
-		bit = uc & (0x01 << (7 - offset));
+		bit = c & (0x01 << (7 - offset));
+		offset++;
 		if (bit == 0x00)
 			res = kill(pid, SIGUSR1);
 		else
@@ -36,7 +34,7 @@ void	ft_send_char(pid_t pid, char c)
 			ft_printf("Failed to send signal to process %d.\n", pid);
 			exit(1);
 		}
-		offset++;
+		usleep(100);
 	}
 }
 
@@ -46,17 +44,17 @@ void	ft_send_msg(pid_t pid, char *msg)
 
 	i = 0;
 	g_sigflg = 0;
-	while (msg[i] != '\0')
+	while (1)
 	{
 		ft_send_char(pid, msg[i]);
+		if (msg[i] == '\0')
+			break ;
 		i++;
 	}
-	ft_send_char(pid, '\0');
-	usleep(500);
 	if (g_sigflg)
-		ft_printf("Successed to send message.\n");
+		ft_printf("[ Successed to send message. ]\n");
 	else
-		ft_printf("Failed to send message.\n");
+		ft_printf("[ Failed to send message. ]\n");
 }
 
 void	sig_handler(int signum)
