@@ -6,15 +6,16 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:04 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/19 20:09:33 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/20 23:34:23 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static void	sig_handler(int signum);
-static void	ft_send_char(pid_t pid, char c);
-static void	ft_send_msg(pid_t pid, char *msg);
+static pid_t	parse_pid(char *s);
+static void		sig_handler(int signum);
+static void		send_char(pid_t pid, char c);
+static void		send_msg(pid_t pid, char *msg);
 
 volatile sig_atomic_t	g_sigflg;
 
@@ -29,9 +30,33 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	signal(SIGUSR1, sig_handler);
-	pid = (pid_t)ft_atoi(av[1]);
-	ft_send_msg(pid, av[2]);
+	pid = parse_pid(av[1]);
+	if (pid < 0)
+	{
+		ft_printf("Invalid Process ID!!\n");
+		return (1);
+	}
+	send_msg(pid, av[2]);
 	return (0);
+}
+
+static pid_t	parse_pid(char *s)
+{
+	int		pid;
+	size_t	i;
+
+	i = 0;
+	pid = 0;
+	while (s[i] != '\0')
+	{
+		if (!ft_isdigit(s[i]) || 10 <= i)
+			return (-1);
+		if (INT_MAX / 10 < pid || INT_MAX - (s[i] - '0') < pid * 10)
+			return (-1);
+		pid = pid * 10 + (s[i] - '0');
+		i++;
+	}
+	return ((pid_t)pid);
 }
 
 static void	sig_handler(int signum)
@@ -40,7 +65,7 @@ static void	sig_handler(int signum)
 		g_sigflg = 1;
 }
 
-static void	ft_send_char(pid_t pid, char c)
+static void	send_char(pid_t pid, char c)
 {
 	int		res;
 	int		offset;
@@ -64,7 +89,7 @@ static void	ft_send_char(pid_t pid, char c)
 	}
 }
 
-static void	ft_send_msg(pid_t pid, char *msg)
+static void	send_msg(pid_t pid, char *msg)
 {
 	size_t	i;
 
@@ -72,7 +97,7 @@ static void	ft_send_msg(pid_t pid, char *msg)
 	g_sigflg = 0;
 	while (1)
 	{
-		ft_send_char(pid, msg[i]);
+		send_char(pid, msg[i]);
 		if (msg[i] == '\0')
 			break ;
 		i++;
