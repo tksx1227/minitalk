@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:29 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/19 20:13:01 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/22 11:21:50 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ static void	store_bits(int bit, pid_t client_pid)
 	static char	c;
 	static char	buf[1024];
 
-	c += bit << (CHAR_BIT - offset);
 	offset++;
+	c += bit << (CHAR_BIT - offset);
 	if (CHAR_BIT <= offset)
 	{
 		buf[i++] = c;
