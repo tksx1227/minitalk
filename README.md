@@ -23,11 +23,11 @@ $ ./bin/client <SERVER_PROCESS_ID> <MESSAGES>
 
 ## Example
 
-```
+```bash
 $ ./bin/server &
 > PID: 42
 $ ./bin/client 42 Hello
 > Hello[ Successed to send message. ]
-$ ./bin/client 42 "I'm sending message to process 42."
-> I'm sending message to process 42.[ Successed to send message. ]
+$ ./bin/client 42 "I am sending message to process 42."
+> I am sending message to process 42.[ Successed to send message. ]
 ```
