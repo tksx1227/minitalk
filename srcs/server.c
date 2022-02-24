@@ -43,7 +43,7 @@ static void	setup_sigaction(void)
 			|| sigaction(SIGUSR1, &sa, NULL) != 0 \
 			|| sigaction(SIGUSR2, &sa, NULL) != 0)
 	{
-		ft_printf("Error: Setup sigaction is failed.\n");
+		ft_printf(SETUP_SIGACTION_ERROR);
 		exit(1);
 	}
 }
@@ -89,7 +89,7 @@ static void	store_bits(int bit, pid_t client_pid)
 			if (buf[idx - 1] == '\0')
 			{
 				if (kill(client_pid, SIGUSR1) != 0)
-					ft_printf("Error: Failed to send signal to process %d.\n", client_pid);
+					ft_printf(FAILED_SEND_SIGNAL_ERROR, client_pid);
 				g_is_processing = 0;
 			}
 			idx = 0;
@@ -116,7 +116,7 @@ static int	get_byte_size(char c)
 		byte_size = 6;
 	else
 	{
-		ft_printf("Error: Received invalid bit data.\n");
+		ft_printf(INVALID_BIT_ERROR);
 		exit(1);
 	}
 	return (byte_size);

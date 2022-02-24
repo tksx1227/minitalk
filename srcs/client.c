@@ -25,18 +25,18 @@ int	main(int ac, char **av)
 
 	if (ac != 3)
 	{
-		ft_printf("Error: Input Error.\n");
-		ft_printf("Usage: client <PROCESS_ID> <MESSAGES>\n");
+		ft_printf(INPUT_ARGUMENT_ERROR);
+		ft_printf(USAGE_MESSAGE);
 		return (1);
 	}
 	signal(SIGUSR1, sig_handler);
 	pid = parse_pid(av[1]);
-	if (pid < 0 || kill(pid, 0) != 0)
+	if (pid <= 1 || kill(pid, 0) != 0)
 	{
 		if (pid <= 1)
-			ft_printf("Error: Invalid Process ID.\n");
+			ft_printf(INVALID_PROCESS_ERROR);
 		else
-			ft_printf("Error: Process %d is not exist.\n", pid);
+			ft_printf(NOT_EXIST_PROCESS_ERROR, pid);
 		return (1);
 	}
 	send_msg(pid, av[2]);
@@ -85,7 +85,7 @@ static void	send_char(pid_t pid, char c)
 			res = kill(pid, SIGUSR2);
 		if (res == -1)
 		{
-			ft_printf("Error: Failed to send signal to process %d.\n", pid);
+			ft_printf(FAILED_SEND_SIGNAL_ERROR, pid);
 			exit(1);
 		}
 		usleep(300);
@@ -108,7 +108,7 @@ static void	send_msg(pid_t pid, char *msg)
 	if (!g_is_successed)
 		usleep(100);
 	if (g_is_successed)
-		ft_printf("[ Successed to send message. ]\n");
+		ft_printf(SUCCESSED_MESSAGE);
 	else
-		ft_printf("[ Failed to send message. ]\n");
+		ft_printf(FAILED_MESSAGE);
 }
