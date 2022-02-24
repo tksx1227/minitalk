@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:04 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/22 11:29:46 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/24 23:00:29 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,19 @@ int	main(int ac, char **av)
 
 static pid_t	parse_pid(char *s)
 {
-	int	i;
+	int	idx;
 	int	pid;
 
-	i = 0;
+	idx = 0;
 	pid = 0;
-	while (s[i] != '\0')
+	while (s[idx] != '\0')
 	{
-		if (!ft_isdigit(s[i]))
+		if (!ft_isdigit(s[idx]))
 			return (-1);
-		pid = pid * 10 + (s[i] - '0');
+		pid = pid * 10 + (s[idx] - '0');
 		if (99999 < pid)
 			return (-1);
-		i++;
+		idx++;
 	}
 	return ((pid_t)pid);
 }
@@ -77,8 +77,8 @@ static void	send_char(pid_t pid, char c)
 	offset = 0;
 	while (offset < CHAR_BIT)
 	{
+		bit = c & (1 << offset);
 		offset++;
-		bit = c & (1 << (CHAR_BIT - offset));
 		if (bit == 0)
 			res = kill(pid, SIGUSR1);
 		else
@@ -88,22 +88,22 @@ static void	send_char(pid_t pid, char c)
 			ft_printf("Failed to send signal to process %d.\n", pid);
 			exit(1);
 		}
-		usleep(100);
+		usleep(500);
 	}
 }
 
 static void	send_msg(pid_t pid, char *msg)
 {
-	size_t	i;
+	size_t	idx;
 
-	i = 0;
+	idx = 0;
 	g_sigflg = 0;
 	while (1)
 	{
-		send_char(pid, msg[i]);
-		if (msg[i] == '\0')
+		send_char(pid, msg[idx]);
+		if (msg[idx] == '\0')
 			break ;
-		i++;
+		idx++;
 	}
 	if (!g_sigflg)
 		usleep(100);
