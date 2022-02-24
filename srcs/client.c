@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:04 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/24 23:55:50 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/25 00:49:21 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void		sig_handler(int signum);
 static void		send_char(pid_t pid, char c);
 static void		send_msg(pid_t pid, char *msg);
 
-volatile sig_atomic_t	g_sigflg;
+volatile sig_atomic_t	g_is_successed;
 
 int	main(int ac, char **av)
 {
@@ -33,7 +33,7 @@ int	main(int ac, char **av)
 	pid = parse_pid(av[1]);
 	if (pid < 0 || kill(pid, 0) != 0)
 	{
-		if (pid < 0)
+		if (pid <= 1)
 			ft_printf("Error: Invalid Process ID.\n");
 		else
 			ft_printf("Error: Process %d is not exist.\n", pid);
@@ -65,7 +65,7 @@ static pid_t	parse_pid(char *s)
 static void	sig_handler(int signum)
 {
 	if (signum == SIGUSR1)
-		g_sigflg = 1;
+		g_is_successed = 1;
 }
 
 static void	send_char(pid_t pid, char c)
@@ -88,7 +88,7 @@ static void	send_char(pid_t pid, char c)
 			ft_printf("Error: Failed to send signal to process %d.\n", pid);
 			exit(1);
 		}
-		usleep(500);
+		usleep(300);
 	}
 }
 
@@ -97,7 +97,7 @@ static void	send_msg(pid_t pid, char *msg)
 	size_t	idx;
 
 	idx = 0;
-	g_sigflg = 0;
+	g_is_successed = 0;
 	while (1)
 	{
 		send_char(pid, msg[idx]);
@@ -105,9 +105,9 @@ static void	send_msg(pid_t pid, char *msg)
 			break ;
 		idx++;
 	}
-	if (!g_sigflg)
+	if (!g_is_successed)
 		usleep(100);
-	if (g_sigflg)
+	if (g_is_successed)
 		ft_printf("[ Successed to send message. ]\n");
 	else
 		ft_printf("[ Failed to send message. ]\n");
