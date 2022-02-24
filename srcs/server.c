@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:29 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/24 23:41:41 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/24 23:56:18 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	setup_sigaction(void)
 			|| sigaction(SIGUSR1, &sa, NULL) != 0 \
 			|| sigaction(SIGUSR2, &sa, NULL) != 0)
 	{
-		ft_printf("ERROR: Setup sigaction is failed.");
+		ft_printf("Error: Setup sigaction is failed.");
 		exit(1);
 	}
 }

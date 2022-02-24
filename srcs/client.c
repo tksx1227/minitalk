@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:04 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/24 23:00:29 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/24 23:55:50 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(int ac, char **av)
 
 	if (ac != 3)
 	{
-		ft_printf("Input Error!!\n");
+		ft_printf("Error: Input Error.\n");
 		ft_printf("Usage: client <PROCESS_ID> <MESSAGES>\n");
 		return (1);
 	}
@@ -34,9 +34,9 @@ int	main(int ac, char **av)
 	if (pid < 0 || kill(pid, 0) != 0)
 	{
 		if (pid < 0)
-			ft_printf("Invalid Process ID!!\n");
+			ft_printf("Error: Invalid Process ID.\n");
 		else
-			ft_printf("Process %d is not exist!!\n", pid);
+			ft_printf("Error: Process %d is not exist.\n", pid);
 		return (1);
 	}
 	send_msg(pid, av[2]);
@@ -85,7 +85,7 @@ static void	send_char(pid_t pid, char c)
 			res = kill(pid, SIGUSR2);
 		if (res == -1)
 		{
-			ft_printf("Failed to send signal to process %d.\n", pid);
+			ft_printf("Error: Failed to send signal to process %d.\n", pid);
 			exit(1);
 		}
 		usleep(500);
