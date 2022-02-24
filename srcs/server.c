@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:29 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/24 23:56:18 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/25 01:57:36 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static void	sig_handler(int signum, siginfo_t *info, void *context);
 static void	store_bits(int bit, pid_t client_pid);
 static int	get_byte_size(char c);
 
+volatile sig_atomic_t	g_is_processing;
+
 int	main(void)
 {
 	pid_t	pid;
@@ -24,6 +26,7 @@ int	main(void)
 	pid = getpid();
 	ft_printf("PID: %d\n", pid);
 	setup_sigaction();
+	g_is_processing = 0;
 	while (1)
 		pause();
 	return (0);
@@ -40,18 +43,30 @@ static void	setup_sigaction(void)
 			|| sigaction(SIGUSR1, &sa, NULL) != 0 \
 			|| sigaction(SIGUSR2, &sa, NULL) != 0)
 	{
-		ft_printf("Error: Setup sigaction is failed.");
+		ft_printf("Error: Setup sigaction is failed.\n");
 		exit(1);
 	}
 }
 
 static void	sig_handler(int signum, siginfo_t *info, void *context)
 {
+	static pid_t	client_pid;
+
 	(void)context;
-	if (signum == SIGUSR1)
-		store_bits(0, info->si_pid);
+	if (g_is_processing)
+	{
+		if (client_pid != info->si_pid)
+			return ;
+	}
 	else
-		store_bits(1, info->si_pid);
+	{
+		g_is_processing = 1;
+		client_pid = info->si_pid;
+	}
+	if (signum == SIGUSR1)
+		store_bits(0, client_pid);
+	else
+		store_bits(1, client_pid);
 }
 
 static void	store_bits(int bit, pid_t client_pid)
@@ -59,26 +74,26 @@ static void	store_bits(int bit, pid_t client_pid)
 	static int	idx;
 	static int	offset;
 	static int	byte_size;
-	static char	c;
 	static char	buf[1024];
 
-	c += bit << offset++;
+	buf[idx] += bit << offset++;
 	if (CHAR_BIT <= offset)
 	{
-		buf[idx++] = c;
+		idx++;
 		if (byte_size == 0)
-			byte_size = get_byte_size(c);
-		if (c == '\0' || (1000 <= idx && byte_size-- == 1))
+			byte_size = get_byte_size(buf[idx - 1]);
+		if (buf[idx - 1] == '\0' || (1000 <= idx && byte_size-- == 1))
 		{
 			ft_printf("%s", buf);
 			ft_bzero(buf, idx);
-			idx = 0;
-			if (c == '\0')
+			if (buf[idx - 1] == '\0')
+			{
 				if (kill(client_pid, SIGUSR1) != 0)
-					ft_printf("Error: Failed to send signal to process %d.\n", \
-							client_pid);
+					ft_printf("Error: Failed to send signal to process %d.\n", client_pid);
+				g_is_processing = 0;
+			}
+			idx = 0;
 		}
-		c = 0;
 		offset = 0;
 	}
 }
