@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:52:09 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/25 02:07:37 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/25 15:56:07 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,7 @@ typedef enum e_prefix
 	PREFIX_5BYTE = 0xF8,
 	PREFIX_6BYTE = 0xFC,
 }	t_prefix;
+
+void	setup_sigaction(void (*sig_handler)(int, siginfo_t *, void *));
 
 #endif

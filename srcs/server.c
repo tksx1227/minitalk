@@ -6,15 +6,15 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:29 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/25 14:58:26 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/25 16:04:07 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static void	setup_sigaction(void);
 static void	sig_handler(int signum, siginfo_t *info, void *context);
 static void	store_bits(int bit, pid_t client_pid);
+static void	send_signal_to_client(pid_t client_pid);
 static int	get_byte_size(unsigned char c);
 
 volatile sig_atomic_t	g_is_processing;
@@ -25,27 +25,11 @@ int	main(void)
 
 	pid = getpid();
 	ft_printf("PID: %d\n", pid);
-	setup_sigaction();
+	setup_sigaction(&sig_handler);
 	g_is_processing = 0;
 	while (1)
 		pause();
 	return (0);
-}
-
-static void	setup_sigaction(void)
-{
-	struct sigaction	sa;
-
-	ft_bzero(&sa, sizeof(sa));
-	sa.sa_flags = SA_SIGINFO;
-	sa.sa_sigaction = sig_handler;
-	if (sigemptyset(&sa.sa_mask) != 0 \
-			|| sigaction(SIGUSR1, &sa, NULL) != 0 \
-			|| sigaction(SIGUSR2, &sa, NULL) != 0)
-	{
-		ft_printf(SETUP_SIGACTION_ERROR);
-		exit(1);
-	}
 }
 
 static void	sig_handler(int signum, siginfo_t *info, void *context)
@@ -88,8 +72,7 @@ static void	store_bits(int bit, pid_t client_pid)
 			ft_bzero(buf, idx);
 			if (buf[idx - 1] == '\0')
 			{
-				if (kill(client_pid, SIGUSR1) != 0)
-					ft_printf(FAILED_SEND_SIGNAL_ERROR, client_pid);
+				send_signal_to_client(client_pid);
 				g_is_processing = 0;
 			}
 			idx = 0;
@@ -121,4 +104,19 @@ static int	get_byte_size(unsigned char c)
 		exit(1);
 	}
 	return (byte_size);
+}
+
+static void	send_signal_to_client(pid_t client_pid)
+{
+	if (kill(client_pid, 0) != 0)
+	{
+		ft_printf(NOT_EXIST_PROCESS_ERROR, client_pid);
+	}
+	else
+	{
+		if (kill(client_pid, SIGUSR1) != 0)
+		{
+			ft_printf(FAILED_SEND_SIGNAL_ERROR, client_pid);
+		}
+	}
 }

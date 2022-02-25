@@ -3,7 +3,7 @@ SRCDIR	:= srcs
 OBJDIR	:= objs
 
 # Define server files
-FILES_S	:= server.c
+FILES_S	:= server.c utils.c
 SERVER	:= $(addprefix $(BINDIR)/, server)
 SRCS_S	:= $(addprefix $(SRCDIR)/, $(FILES_S))
 OBJS_S	:= $(addprefix $(OBJDIR)/, $(FILES_S:.c=.o))
