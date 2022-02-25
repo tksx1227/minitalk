@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:04 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/25 00:49:21 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/25 15:00:49 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static pid_t	parse_pid(char *s);
 static void		sig_handler(int signum);
-static void		send_char(pid_t pid, char c);
+static void		send_char(pid_t pid, unsigned char c);
 static void		send_msg(pid_t pid, char *msg);
 
 volatile sig_atomic_t	g_is_successed;
@@ -68,11 +68,11 @@ static void	sig_handler(int signum)
 		g_is_successed = 1;
 }
 
-static void	send_char(pid_t pid, char c)
+static void	send_char(pid_t pid, unsigned char c)
 {
-	int		res;
-	int		offset;
-	char	bit;
+	int				res;
+	int				offset;
+	unsigned char	bit;
 
 	offset = 0;
 	while (offset < CHAR_BIT)
