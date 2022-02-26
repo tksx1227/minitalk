@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:04 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/27 02:08:49 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/27 02:15:26 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static pid_t	parse_pid(char *s)
 		if (!ft_isdigit(s[idx]))
 			return (-1);
 		pid = pid * 10 + (s[idx] - '0');
-		if (99999 < pid)
+		if (MAX_PROCESS_ID < pid)
 			return (-1);
 		idx++;
 	}
@@ -109,7 +109,7 @@ static void	send_msg(pid_t pid, char *msg)
 		idx++;
 	}
 	if (!g_is_successed)
-		usleep(100);
+		usleep(500);
 	if (g_is_successed)
 		ft_dprintf(STDOUT_FILENO, "[ Successed to send message. ]\n");
 	else

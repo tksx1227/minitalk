@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:52:09 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/27 02:07:17 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/27 02:13:37 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,7 @@
 # include <signal.h>
 # include <sys/types.h>
 # include "../ft_dprintf/includes/ft_dprintf.h"
+
+# define MAX_PROCESS_ID 99999
 
 #endif
