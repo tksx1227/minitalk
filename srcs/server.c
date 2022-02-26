@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:29 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/27 01:58:07 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/27 02:07:50 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	main(void)
 
 	pid = getpid();
 	ft_dprintf(STDOUT_FILENO, "PID: %d\n", pid);
-	setup_sigaction(&sig_handler);
 	g_is_interrupted = 0;
+	setup_sigaction(&sig_handler);
 	while (1)
 		pause();
 	return (0);
@@ -43,7 +43,7 @@ static void	setup_sigaction(void (*handler)(int, siginfo_t *, void *))
 			|| sigaction(SIGUSR1, &sa, NULL) != 0 \
 			|| sigaction(SIGUSR2, &sa, NULL) != 0)
 	{
-		ft_dprintf(STDERR_FILENO, SETUP_SIGACTION_ERROR);
+		ft_dprintf(STDERR_FILENO, "Error: Setup sigaction failed.\n");
 		exit(1);
 	}
 }
@@ -99,13 +99,15 @@ static void	send_signal_to_client(pid_t client_pid)
 {
 	if (kill(client_pid, 0) != 0)
 	{
-		ft_dprintf(STDERR_FILENO, NOT_EXIST_PROCESS_ERROR, client_pid);
+		ft_dprintf(STDERR_FILENO, \
+				"Error: Process %d does not exist.\n", client_pid);
 	}
 	else
 	{
 		if (kill(client_pid, SIGUSR1) != 0)
 		{
-			ft_dprintf(STDERR_FILENO, FAILED_SEND_SIGNAL_ERROR, client_pid);
+			ft_dprintf(STDERR_FILENO, \
+					"Error: Failed to send signal to process %d.\n", client_pid);
 		}
 	}
 }

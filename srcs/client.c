@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:04 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/27 01:57:31 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/27 02:08:49 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	main(int ac, char **av)
 
 	if (ac != 3)
 	{
-		ft_dprintf(STDERR_FILENO, INPUT_ARGUMENT_ERROR);
-		ft_dprintf(STDERR_FILENO, USAGE_MESSAGE);
+		ft_dprintf(STDERR_FILENO, "Error: Input Error.\n");
+		ft_dprintf(STDERR_FILENO, "Usage: client <PROCESS_ID> <MESSAGES>\n");
 		return (1);
 	}
 	signal(SIGUSR1, sig_handler);
@@ -34,9 +34,11 @@ int	main(int ac, char **av)
 	if (pid <= 1 || kill(pid, 0) != 0)
 	{
 		if (pid <= 1)
-			ft_dprintf(STDERR_FILENO, INVALID_PROCESS_ERROR);
+			ft_dprintf(STDERR_FILENO, \
+					"Error: Received invalid bit data.\n");
 		else
-			ft_dprintf(STDERR_FILENO, NOT_EXIST_PROCESS_ERROR, pid);
+			ft_dprintf(STDERR_FILENO, \
+					"Error: Process %d does not exist.\n", pid);
 		return (1);
 	}
 	send_msg(pid, av[2]);
@@ -85,7 +87,8 @@ static void	send_char(pid_t pid, unsigned char c)
 			res = kill(pid, SIGUSR2);
 		if (res == -1)
 		{
-			ft_dprintf(STDERR_FILENO, FAILED_SEND_SIGNAL_ERROR, pid);
+			ft_dprintf(STDERR_FILENO, \
+					"Error: Failed to send signal to process %d.\n", pid);
 			exit(1);
 		}
 		usleep(100);
@@ -108,7 +111,7 @@ static void	send_msg(pid_t pid, char *msg)
 	if (!g_is_successed)
 		usleep(100);
 	if (g_is_successed)
-		ft_dprintf(STDOUT_FILENO, SUCCESSED_MESSAGE);
+		ft_dprintf(STDOUT_FILENO, "[ Successed to send message. ]\n");
 	else
-		ft_dprintf(STDOUT_FILENO, FAILED_MESSAGE);
+		ft_dprintf(STDOUT_FILENO, "[ Failed to send message. ]\n");
 }
