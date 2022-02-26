@@ -15,12 +15,13 @@ SRCS_C	:= $(addprefix $(SRCDIR)/, $(FILES_C))
 OBJS_C	:= $(addprefix $(OBJDIR)/, $(FILES_C:.c=.o))
 
 CC		:= cc
+RM		:= rm -rf
 NAME	:= minitalk
 LIBFT	:= ft_printf/lib/libftprintf.a
 INCDIR	:= includes
 CFLAGS	:= -Wall -Wextra -Werror
 
-all: $(LIBFT) $(SERVER) $(CLIENT)
+all: $(LIBFT) $(BINDIR) $(OBJDIR) $(SERVER) $(CLIENT)
 
 $(NAME): all
 
@@ -36,16 +37,20 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 $(LIBFT):
 	$(MAKE) -C ft_printf
 
+$(BINDIR):
+	mkdir -p $@
+
+$(OBJDIR):
+	mkdir -p $@
+
 clean:
 	$(MAKE) -C ft_printf clean
-	$(RM) $(OBJS_S) $(OBJS_C)
+	$(RM) $(OBJDIR)
 
 fclean: clean
 	$(MAKE) -C ft_printf fclean
-	$(RM) $(SERVER) $(CLIENT)
+	$(RM) $(BINDIR)
 
 re: fclean all
 
-bonus: all
-
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re
