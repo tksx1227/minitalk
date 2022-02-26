@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   setup_sigaction.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/17 18:51:29 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/27 02:50:31 by ttomori          ###   ########.fr       */
+/*   Created: 2022/02/27 02:48:15 by ttomori           #+#    #+#             */
+/*   Updated: 2022/02/27 02:48:27 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 #include "server.h"
 
-int	main(void)
+void	setup_sigaction(void (*handler)(int, siginfo_t *, void *))
 {
-	pid_t	pid;
+	struct sigaction	sa;
 
-	pid = getpid();
-	ft_dprintf(STDOUT_FILENO, "PID: %d\n", pid);
-	g_is_interrupted = 0;
-	setup_sigaction(&sig_handler);
-	while (1)
-		pause();
-	return (0);
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = handler;
+	if (sigemptyset(&sa.sa_mask) != 0 \
+			|| sigaction(SIGUSR1, &sa, NULL) != 0 \
+			|| sigaction(SIGUSR2, &sa, NULL) != 0)
+	{
+		ft_dprintf(STDERR_FILENO, "Error: Setup sigaction failed.\n");
+		exit(1);
+	}
 }

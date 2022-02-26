@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.h                                           :+:      :+:    :+:   */
+/*   send_signal_to_client.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/17 18:52:09 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/27 02:46:05 by ttomori          ###   ########.fr       */
+/*   Created: 2022/02/27 02:49:58 by ttomori           #+#    #+#             */
+/*   Updated: 2022/02/27 02:50:08 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLIENT_H
-# define CLIENT_H
+#include "minitalk.h"
+#include "server.h"
 
-# define MAX_PROCESS_ID 99999
-
-volatile sig_atomic_t	g_is_successed;
-
-pid_t	parse_pid(char *s);
-void	sig_handler(int signum);
-void	send_char(pid_t pid, unsigned char c);
-void	send_message(pid_t pid, char *msg);
-
-#endif
+void	send_signal_to_client(pid_t client_pid)
+{
+	if (kill(client_pid, 0) != 0)
+	{
+		ft_dprintf(STDERR_FILENO, \
+				"Error: Process %d does not exist.\n", client_pid);
+	}
+	else
+	{
+		if (kill(client_pid, SIGUSR1) != 0)
+		{
+			ft_dprintf(STDERR_FILENO, \
+					"Error: Failed to send signal to process %d.\n", client_pid);
+		}
+	}
+}

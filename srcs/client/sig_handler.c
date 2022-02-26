@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.h                                           :+:      :+:    :+:   */
+/*   sig_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/17 18:52:09 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/27 02:46:05 by ttomori          ###   ########.fr       */
+/*   Created: 2022/02/27 02:43:52 by ttomori           #+#    #+#             */
+/*   Updated: 2022/02/27 02:44:06 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CLIENT_H
-# define CLIENT_H
+#include "minitalk.h"
+#include "client.h"
 
-# define MAX_PROCESS_ID 99999
-
-volatile sig_atomic_t	g_is_successed;
-
-pid_t	parse_pid(char *s);
-void	sig_handler(int signum);
-void	send_char(pid_t pid, unsigned char c);
-void	send_message(pid_t pid, char *msg);
-
-#endif
+void	sig_handler(int signum)
+{
+	if (signum == SIGUSR1)
+		g_is_successed = 1;
+}

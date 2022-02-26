@@ -1,27 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   send_char.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/17 18:51:29 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/27 02:50:31 by ttomori          ###   ########.fr       */
+/*   Created: 2022/02/27 02:44:24 by ttomori           #+#    #+#             */
+/*   Updated: 2022/02/27 02:44:38 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
-#include "server.h"
+#include "client.h"
 
-int	main(void)
+void	send_char(pid_t pid, unsigned char c)
 {
-	pid_t	pid;
+	int				res;
+	int				offset;
+	unsigned char	bit;
 
-	pid = getpid();
-	ft_dprintf(STDOUT_FILENO, "PID: %d\n", pid);
-	g_is_interrupted = 0;
-	setup_sigaction(&sig_handler);
-	while (1)
-		pause();
-	return (0);
+	offset = 0;
+	while (offset < CHAR_BIT)
+	{
+		bit = c & (1 << offset);
+		offset++;
+		if (bit == 0)
+			res = kill(pid, SIGUSR1);
+		else
+			res = kill(pid, SIGUSR2);
+		if (res == -1)
+		{
+			ft_dprintf(STDERR_FILENO, \
+					"Error: Failed to send signal to process %d.\n", pid);
+			exit(1);
+		}
+		usleep(100);
+	}
 }
