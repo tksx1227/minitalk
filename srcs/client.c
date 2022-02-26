@@ -38,7 +38,7 @@ int	main(int ac, char **av)
 	if (pid <= 1 || kill(pid, 0) != 0)
 	{
 		if (pid <= 1)
-			ft_dprintf(STDERR_FILENO, "Error: Received invalid bit data.\n");
+			ft_dprintf(STDERR_FILENO, "Error: Invalid Process ID.\n");
 		else
 			ft_dprintf(STDERR_FILENO, \
 					"Error: Process %d does not exist.\n", pid);
