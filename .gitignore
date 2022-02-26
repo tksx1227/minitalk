@@ -55,5 +55,5 @@ dkms.conf
 bin/server
 bin/client
 
-# ft_printf
-ft_printf/
+# ft_dprintf
+ft_dprintf/

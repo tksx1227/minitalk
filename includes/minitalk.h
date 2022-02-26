@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:52:09 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/26 18:27:40 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/27 01:49:35 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include <signal.h>
 # include <sys/types.h>
-# include "../ft_printf/includes/ft_printf.h"
+# include "../ft_dprintf/includes/ft_dprintf.h"
 
 # define SETUP_SIGACTION_ERROR "Error: Setup sigaction failed.\n"
 # define INVALID_BIT_ERROR "Error: Received invalid bit data.\n"

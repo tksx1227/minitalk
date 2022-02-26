@@ -17,7 +17,7 @@ OBJS_C	:= $(addprefix $(OBJDIR)/, $(FILES_C:.c=.o))
 CC		:= cc
 RM		:= rm -rf
 NAME	:= minitalk
-LIBFT	:= ft_printf/lib/libftprintf.a
+LIBFT	:= ft_dprintf/lib/libftdprintf.a
 INCDIR	:= includes
 CFLAGS	:= -Wall -Wextra -Werror
 
@@ -35,7 +35,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -I$(INCDIR) -c $< -o $@
 
 $(LIBFT):
-	$(MAKE) -C ft_printf
+	$(MAKE) -C ft_dprintf
 
 $(BINDIR):
 	mkdir -p $@
@@ -44,11 +44,11 @@ $(OBJDIR):
 	mkdir -p $@
 
 clean:
-	$(MAKE) -C ft_printf clean
+	$(MAKE) -C ft_dprintf clean
 	$(RM) $(OBJDIR)
 
 fclean: clean
-	$(MAKE) -C ft_printf fclean
+	$(MAKE) -C ft_dprintf fclean
 	$(RM) $(BINDIR)
 
 re: fclean all

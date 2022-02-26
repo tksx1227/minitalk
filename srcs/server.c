@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:29 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/26 23:46:37 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/27 01:58:07 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(void)
 	pid_t	pid;
 
 	pid = getpid();
-	ft_printf("PID: %d\n", pid);
+	ft_dprintf(STDOUT_FILENO, "PID: %d\n", pid);
 	setup_sigaction(&sig_handler);
 	g_is_interrupted = 0;
 	while (1)
@@ -43,7 +43,7 @@ static void	setup_sigaction(void (*handler)(int, siginfo_t *, void *))
 			|| sigaction(SIGUSR1, &sa, NULL) != 0 \
 			|| sigaction(SIGUSR2, &sa, NULL) != 0)
 	{
-		ft_printf(SETUP_SIGACTION_ERROR);
+		ft_dprintf(STDERR_FILENO, SETUP_SIGACTION_ERROR);
 		exit(1);
 	}
 }
@@ -75,7 +75,6 @@ static void	store_bits(int bit, pid_t client_pid)
 	if (g_is_interrupted)
 	{
 		buf[offset / CHAR_BIT] = 0;
-		ft_printf("%s", buf);
 		offset = 0;
 		g_is_interrupted = 0;
 	}
@@ -85,7 +84,7 @@ static void	store_bits(int bit, pid_t client_pid)
 	{
 		if (buf[(offset / CHAR_BIT) - 1] == '\0' || 1000 < (offset / CHAR_BIT))
 		{
-			ft_printf("%s", buf);
+			ft_dprintf(STDOUT_FILENO, "%s", buf);
 			if (buf[(offset / CHAR_BIT) - 1] == '\0')
 			{
 				send_signal_to_client(client_pid);
@@ -100,13 +99,13 @@ static void	send_signal_to_client(pid_t client_pid)
 {
 	if (kill(client_pid, 0) != 0)
 	{
-		ft_printf(NOT_EXIST_PROCESS_ERROR, client_pid);
+		ft_dprintf(STDERR_FILENO, NOT_EXIST_PROCESS_ERROR, client_pid);
 	}
 	else
 	{
 		if (kill(client_pid, SIGUSR1) != 0)
 		{
-			ft_printf(FAILED_SEND_SIGNAL_ERROR, client_pid);
+			ft_dprintf(STDERR_FILENO, FAILED_SEND_SIGNAL_ERROR, client_pid);
 		}
 	}
 }
