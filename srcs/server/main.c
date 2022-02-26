@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:29 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/27 02:07:50 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/27 02:40:04 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+#include "server.h"
 
 static void	setup_sigaction(void (*sig_handler)(int, siginfo_t *, void *));
 static void	sig_handler(int signum, siginfo_t *info, void *context);

@@ -3,16 +3,16 @@ SRCDIR	:= srcs
 OBJDIR	:= objs
 
 # Define server files
-FILES_S	:= server.c
-SERVER	:= $(addprefix $(BINDIR)/, server)
-SRCS_S	:= $(addprefix $(SRCDIR)/, $(FILES_S))
-OBJS_S	:= $(addprefix $(OBJDIR)/, $(FILES_S:.c=.o))
+FILES_S	:= main.c
+SERVER	:= $(BINDIR)/server
+SRCS_S	:= $(addprefix $(SRCDIR)/server/, $(FILES_S))
+OBJS_S	:= $(addprefix $(OBJDIR)/server/, $(FILES_S:.c=.o))
 
 # Define client files
-FILES_C	:= client.c
-CLIENT	:= $(addprefix $(BINDIR)/, client)
-SRCS_C	:= $(addprefix $(SRCDIR)/, $(FILES_C))
-OBJS_C	:= $(addprefix $(OBJDIR)/, $(FILES_C:.c=.o))
+FILES_C	:= main.c
+CLIENT	:= $(BINDIR)/client
+SRCS_C	:= $(addprefix $(SRCDIR)/client/, $(FILES_C))
+OBJS_C	:= $(addprefix $(OBJDIR)/client/, $(FILES_C:.c=.o))
 
 CC		:= cc
 RM		:= rm -rf
@@ -42,6 +42,8 @@ $(BINDIR):
 
 $(OBJDIR):
 	mkdir -p $@
+	mkdir -p $@/client
+	mkdir -p $@/server
 
 clean:
 	$(MAKE) -C ft_dprintf clean
