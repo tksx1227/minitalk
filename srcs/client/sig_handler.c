@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
 #include "client.h"
 
 void	sig_handler(int signum)

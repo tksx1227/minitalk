@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
 #include "server.h"
 
 void	sig_handler(int signum, siginfo_t *info, void *context)

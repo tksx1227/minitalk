@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
 #include "client.h"
 
 int	main(int ac, char **av)

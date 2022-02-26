@@ -15,6 +15,8 @@
 
 # define MAX_PROCESS_ID 99999
 
+# include "minitalk.h"
+
 volatile sig_atomic_t	g_is_successed;
 
 pid_t	parse_pid(char *s);

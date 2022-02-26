@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
 #include "client.h"
 
 void	send_message(pid_t pid, char *msg)

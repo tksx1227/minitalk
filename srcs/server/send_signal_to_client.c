@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
 #include "server.h"
 
 void	send_signal_to_client(pid_t client_pid)

@@ -13,6 +13,8 @@
 #ifndef SERVER_H
 # define SERVER_H
 
+# include "minitalk.h"
+
 volatile sig_atomic_t	g_is_interrupted;
 
 void	sig_handler(int signum, siginfo_t *info, void *context);

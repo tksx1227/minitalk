@@ -52,8 +52,7 @@ Mkfile.old
 dkms.conf
 
 # Target binary file
-bin/server
-bin/client
+bin/
 
 # ft_dprintf
 ft_dprintf/

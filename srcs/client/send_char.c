@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
 #include "client.h"
 
 void	send_char(pid_t pid, unsigned char c)

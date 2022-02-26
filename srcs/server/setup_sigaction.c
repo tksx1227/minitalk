@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
 #include "server.h"
 
 void	setup_sigaction(void (*handler)(int, siginfo_t *, void *))

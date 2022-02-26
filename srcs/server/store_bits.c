@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
 #include "server.h"
 
 void	store_bits(int bit, pid_t client_pid)
