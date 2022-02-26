@@ -1,22 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   parse_pid.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/17 18:52:09 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/27 02:39:08 by ttomori          ###   ########.fr       */
+/*   Created: 2022/02/27 02:43:00 by ttomori           #+#    #+#             */
+/*   Updated: 2022/02/27 02:43:23 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "client.h"
 
-# include <unistd.h>
-# include <limits.h>
-# include <signal.h>
-# include <sys/types.h>
-# include "../ft_dprintf/includes/ft_dprintf.h"
+pid_t	parse_pid(char *s)
+{
+	int		pid;
+	size_t	idx;
 
-#endif
+	idx = 0;
+	pid = 0;
+	while (s[idx] != '\0')
+	{
+		if (!ft_isdigit(s[idx]))
+			return (-1);
+		pid = pid * 10 + (s[idx] - '0');
+		if (MAX_PROCESS_ID < pid)
+			return (-1);
+		idx++;
+	}
+	return ((pid_t)pid);
+}

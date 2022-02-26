@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   server.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:52:09 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/27 02:39:08 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/27 02:50:39 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#ifndef SERVER_H
+# define SERVER_H
 
-# include <unistd.h>
-# include <limits.h>
-# include <signal.h>
-# include <sys/types.h>
-# include "../ft_dprintf/includes/ft_dprintf.h"
+# include "minitalk.h"
+
+volatile sig_atomic_t	g_is_interrupted;
+
+void	sig_handler(int signum, siginfo_t *info, void *context);
+void	setup_sigaction(void (*handler)(int, siginfo_t *, void *));
+void	store_bits(int bit, pid_t client_pid);
+void	send_signal_to_client(pid_t client_pid);
 
 #endif

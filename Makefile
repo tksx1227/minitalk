@@ -3,24 +3,29 @@ SRCDIR	:= srcs
 OBJDIR	:= objs
 
 # Define server files
-FILES_S	:= server.c utils.c
-SERVER	:= $(addprefix $(BINDIR)/, server)
-SRCS_S	:= $(addprefix $(SRCDIR)/, $(FILES_S))
-OBJS_S	:= $(addprefix $(OBJDIR)/, $(FILES_S:.c=.o))
+FILES_S	:= main.c sig_handler.c setup_sigaction.c \
+		   store_bits.c send_signal_to_client.c
+SERVER	:= $(BINDIR)/server
+SRCS_S	:= $(addprefix $(SRCDIR)/server/, $(FILES_S))
+OBJS_S	:= $(addprefix $(OBJDIR)/server/, $(FILES_S:.c=.o))
+DEPS_S	:= $(addprefix $(OBJDIR)/server/, $(FILES_S:.c=.d))
 
 # Define client files
-FILES_C	:= client.c
-CLIENT	:= $(addprefix $(BINDIR)/, client)
-SRCS_C	:= $(addprefix $(SRCDIR)/, $(FILES_C))
-OBJS_C	:= $(addprefix $(OBJDIR)/, $(FILES_C:.c=.o))
+FILES_C	:= main.c parse_pid.c sig_handler.c \
+		   send_char.c send_message.c
+CLIENT	:= $(BINDIR)/client
+SRCS_C	:= $(addprefix $(SRCDIR)/client/, $(FILES_C))
+OBJS_C	:= $(addprefix $(OBJDIR)/client/, $(FILES_C:.c=.o))
+DEPS_C	:= $(addprefix $(OBJDIR)/client/, $(FILES_C:.c=.d))
 
 CC		:= cc
+RM		:= rm -rf
 NAME	:= minitalk
-LIBFT	:= ft_printf/lib/libftprintf.a
+LIBFT	:= ft_dprintf/lib/libftdprintf.a
 INCDIR	:= includes
-CFLAGS	:= -Wall -Wextra -Werror
+CFLAGS	:= -Wall -Wextra -Werror -MMD -MP
 
-all: $(LIBFT) $(SERVER) $(CLIENT)
+all: $(LIBFT) $(BINDIR) $(OBJDIR) $(SERVER) $(CLIENT)
 
 $(NAME): all
 
@@ -33,22 +38,25 @@ $(CLIENT): $(OBJS_C) $(LIBFT)
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -I$(INCDIR) -c $< -o $@
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(CFLAGS) -I$(INCDIR) -c $< -o $@
-
 $(LIBFT):
-	$(MAKE) -C ft_printf
+	$(MAKE) -C ft_dprintf
+
+$(BINDIR):
+	mkdir -p $@
+
+$(OBJDIR):
+	mkdir -p $@/server $@/client
 
 clean:
-	$(MAKE) -C ft_printf clean
-	$(RM) $(OBJS_S) $(OBJS_C)
+	$(MAKE) -C ft_dprintf clean
+	$(RM) $(OBJDIR)
 
 fclean: clean
-	$(MAKE) -C ft_printf fclean
-	$(RM) $(SERVER) $(CLIENT)
+	$(MAKE) -C ft_dprintf fclean
+	$(RM) $(BINDIR)
 
 re: fclean all
 
-bonus: all
+-include $(DEPS_S) $(DEPS_C)
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re

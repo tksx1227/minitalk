@@ -1,22 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   sig_handler.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/17 18:52:09 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/27 02:39:08 by ttomori          ###   ########.fr       */
+/*   Created: 2022/02/27 02:48:55 by ttomori           #+#    #+#             */
+/*   Updated: 2022/02/27 02:49:05 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "server.h"
 
-# include <unistd.h>
-# include <limits.h>
-# include <signal.h>
-# include <sys/types.h>
-# include "../ft_dprintf/includes/ft_dprintf.h"
+void	sig_handler(int signum, siginfo_t *info, void *context)
+{
+	static pid_t	client_pid;
 
-#endif
+	(void)context;
+	if (client_pid != info->si_pid)
+	{
+		client_pid = info->si_pid;
+		if (client_pid != 0)
+		{
+			g_is_interrupted = 1;
+		}
+	}
+	if (signum == SIGUSR1)
+		store_bits(0, client_pid);
+	else
+		store_bits(1, client_pid);
+}
