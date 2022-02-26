@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:04 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/27 02:45:48 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/27 03:50:15 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(int ac, char **av)
 		ft_dprintf(STDERR_FILENO, "Usage: client <PROCESS_ID> <MESSAGES>\n");
 		return (1);
 	}
-	if (signal(SIGUSR1, sig_handler) != 0)
+	if (signal(SIGUSR1, sig_handler) == SIG_ERR)
 	{
 		ft_dprintf(STDERR_FILENO, "Error: Setup signal failed.\n");
 		return (1);
