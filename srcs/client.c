@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:04 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/27 02:15:26 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/27 02:19:08 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,16 @@ int	main(int ac, char **av)
 		ft_dprintf(STDERR_FILENO, "Usage: client <PROCESS_ID> <MESSAGES>\n");
 		return (1);
 	}
-	signal(SIGUSR1, sig_handler);
+	if (signal(SIGUSR1, sig_handler) != 0)
+	{
+		ft_dprintf(STDERR_FILENO, "Error: Setup signal failed.\n");
+		return (1);
+	}
 	pid = parse_pid(av[1]);
 	if (pid <= 1 || kill(pid, 0) != 0)
 	{
 		if (pid <= 1)
-			ft_dprintf(STDERR_FILENO, \
-					"Error: Received invalid bit data.\n");
+			ft_dprintf(STDERR_FILENO, "Error: Received invalid bit data.\n");
 		else
 			ft_dprintf(STDERR_FILENO, \
 					"Error: Process %d does not exist.\n", pid);
