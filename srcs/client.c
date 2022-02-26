@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:04 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/25 15:00:49 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/26 17:18:06 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ int	main(int ac, char **av)
 
 static pid_t	parse_pid(char *s)
 {
-	int	idx;
-	int	pid;
+	int		pid;
+	size_t	idx;
 
 	idx = 0;
 	pid = 0;
