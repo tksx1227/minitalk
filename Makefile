@@ -8,6 +8,7 @@ FILES_S	:= main.c sig_handler.c setup_sigaction.c \
 SERVER	:= $(BINDIR)/server
 SRCS_S	:= $(addprefix $(SRCDIR)/server/, $(FILES_S))
 OBJS_S	:= $(addprefix $(OBJDIR)/server/, $(FILES_S:.c=.o))
+DEPS_S	:= $(addprefix $(OBJDIR)/server/, $(FILES_S:.c=.d))
 
 # Define client files
 FILES_C	:= main.c parse_pid.c sig_handler.c \
@@ -15,13 +16,14 @@ FILES_C	:= main.c parse_pid.c sig_handler.c \
 CLIENT	:= $(BINDIR)/client
 SRCS_C	:= $(addprefix $(SRCDIR)/client/, $(FILES_C))
 OBJS_C	:= $(addprefix $(OBJDIR)/client/, $(FILES_C:.c=.o))
+DEPS_C	:= $(addprefix $(OBJDIR)/client/, $(FILES_C:.c=.d))
 
 CC		:= cc
 RM		:= rm -rf
 NAME	:= minitalk
 LIBFT	:= ft_dprintf/lib/libftdprintf.a
 INCDIR	:= includes
-CFLAGS	:= -Wall -Wextra -Werror
+CFLAGS	:= -Wall -Wextra -Werror -MMD -MP
 
 all: $(LIBFT) $(BINDIR) $(OBJDIR) $(SERVER) $(CLIENT)
 
@@ -43,9 +45,7 @@ $(BINDIR):
 	mkdir -p $@
 
 $(OBJDIR):
-	mkdir -p $@
-	mkdir -p $@/client
-	mkdir -p $@/server
+	mkdir -p $@/server $@/client
 
 clean:
 	$(MAKE) -C ft_dprintf clean
@@ -56,5 +56,7 @@ fclean: clean
 	$(RM) $(BINDIR)
 
 re: fclean all
+
+-include $(DEPS_S) $(DEPS_C)
 
 .PHONY: all clean fclean re
