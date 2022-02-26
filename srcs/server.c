@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:29 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/26 17:15:08 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/26 17:28:50 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,9 @@ static void	store_bits(int bit, pid_t client_pid)
 	if (CHAR_BIT <= offset)
 	{
 		idx++;
-		if (buf[idx - 1] == '\0' || 1000 <= idx)
+		if (buf[idx - 1] == '\0' || 1000 < idx)
 		{
 			ft_printf("%s", buf);
-			ft_bzero(buf, idx);
 			if (buf[idx - 1] == '\0')
 			{
 				send_signal_to_client(client_pid);
@@ -73,6 +72,7 @@ static void	store_bits(int bit, pid_t client_pid)
 			}
 			idx = 0;
 		}
+		buf[idx] = 0;
 		offset = 0;
 	}
 }
