@@ -6,12 +6,13 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:29 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/26 17:28:50 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/26 18:28:51 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
+static void	setup_sigaction(void (*sig_handler)(int, siginfo_t *, void *));
 static void	sig_handler(int signum, siginfo_t *info, void *context);
 static void	store_bits(int bit, pid_t client_pid);
 static void	send_signal_to_client(pid_t client_pid);
@@ -29,6 +30,22 @@ int	main(void)
 	while (1)
 		pause();
 	return (0);
+}
+
+static void	setup_sigaction(void (*handler)(int, siginfo_t *, void *))
+{
+	struct sigaction	sa;
+
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = handler;
+	if (sigemptyset(&sa.sa_mask) != 0 \
+			|| sigaction(SIGUSR1, &sa, NULL) != 0 \
+			|| sigaction(SIGUSR2, &sa, NULL) != 0)
+	{
+		ft_printf(SETUP_SIGACTION_ERROR);
+		exit(1);
+	}
 }
 
 static void	sig_handler(int signum, siginfo_t *info, void *context)

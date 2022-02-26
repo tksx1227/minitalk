@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:52:09 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/26 17:32:47 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/26 18:27:40 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,5 @@
 # define FAILED_SEND_SIGNAL_ERROR "Error: Failed to send signal to process %d.\n"
 # define SUCCESSED_MESSAGE "[ Successed to send message. ]\n"
 # define FAILED_MESSAGE "[ Failed to send message. ]\n"
-
-void	setup_sigaction(void (*sig_handler)(int, siginfo_t *, void *));
 
 #endif

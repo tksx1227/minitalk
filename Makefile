@@ -3,7 +3,7 @@ SRCDIR	:= srcs
 OBJDIR	:= objs
 
 # Define server files
-FILES_S	:= server.c utils.c
+FILES_S	:= server.c
 SERVER	:= $(addprefix $(BINDIR)/, server)
 SRCS_S	:= $(addprefix $(SRCDIR)/, $(FILES_S))
 OBJS_S	:= $(addprefix $(OBJDIR)/, $(FILES_S:.c=.o))
@@ -29,9 +29,6 @@ $(SERVER): $(OBJS_S) $(LIBFT)
 
 $(CLIENT): $(OBJS_C) $(LIBFT)
 	$(CC) $(CFLAGS) -o $@ $^
-
-$(OBJDIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(CFLAGS) -I$(INCDIR) -c $< -o $@
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) -I$(INCDIR) -c $< -o $@
