@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:51:04 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/26 17:18:06 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/26 17:28:24 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static void	send_char(pid_t pid, unsigned char c)
 			ft_printf(FAILED_SEND_SIGNAL_ERROR, pid);
 			exit(1);
 		}
-		usleep(300);
+		usleep(100);
 	}
 }
 
