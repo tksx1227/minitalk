@@ -1,10 +1,6 @@
 # minitalk
 A programs that uses UNIX signals to perform small data exchange.
 
-Place ft_dprintf in the root directory and use it.
-
-[![tksx1227/ft_dprintf - GitHub](https://gh-card.dev/repos/tksx1227/ft_dprintf.svg?fullname=)](https://github.com/tksx1227/ft_dprintf)
-
 ## Description
 It is a program that sends an arbitrary character string from the client to the server using a signal.
 
