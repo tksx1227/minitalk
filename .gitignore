@@ -53,6 +53,3 @@ dkms.conf
 
 # Target binary file
 bin/
-
-# ft_dprintf
-ft_dprintf/

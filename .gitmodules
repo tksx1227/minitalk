@@ -1,0 +1,3 @@
+[submodule "ft_dprintf"]
+	path = ft_dprintf
+	url = https://github.com/tksx1227/ft_dprintf.git
