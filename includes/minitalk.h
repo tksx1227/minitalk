@@ -6,7 +6,7 @@
 /*   By: ttomori <ttomori@student.42tokyo.jp>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/17 18:52:09 by ttomori           #+#    #+#             */
-/*   Updated: 2022/02/27 02:39:08 by ttomori          ###   ########.fr       */
+/*   Updated: 2022/02/27 16:09:48 by ttomori          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,6 @@
 # include <limits.h>
 # include <signal.h>
 # include <sys/types.h>
-# include "../ft_dprintf/includes/ft_dprintf.h"
+# include "ft_dprintf.h"
 
 #endif

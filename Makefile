@@ -22,7 +22,7 @@ CC		:= cc
 RM		:= rm -rf
 NAME	:= minitalk
 LIBFT	:= ft_dprintf/lib/libftdprintf.a
-INCDIR	:= includes
+INCDIR	:= ft_dprintf/includes ft_dprintf/libft/includes includes
 CFLAGS	:= -Wall -Wextra -Werror -MMD -MP
 
 all: $(LIBFT) $(BINDIR) $(OBJDIR) $(SERVER) $(CLIENT)
@@ -36,7 +36,7 @@ $(CLIENT): $(OBJS_C) $(LIBFT)
 	$(CC) $(CFLAGS) -o $@ $^
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(CFLAGS) -I$(INCDIR) -c $< -o $@
+	$(CC) $(CFLAGS) $(addprefix -I, $(INCDIR)) -c $< -o $@
 
 $(LIBFT):
 	$(MAKE) -C ft_dprintf
